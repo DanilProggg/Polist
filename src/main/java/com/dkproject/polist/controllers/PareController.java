@@ -1,11 +1,14 @@
 package com.dkproject.polist.controllers;
 
 import com.dkproject.polist.dtos.PareDto;
+import com.dkproject.polist.entities.Pare;
 import com.dkproject.polist.services.PareService;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
+import java.sql.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/pare")
@@ -16,18 +19,29 @@ public class PareController {
         this.pareService = pareService;
     }
 
-    @GetMapping("/all-list")
-    private String getList(){
-        return "hello";
+    @GetMapping("/week")
+    public List<Pare> getParesOnWeek(
+            @RequestParam Date from,
+            @RequestParam Date to
+    ){
+        return pareService.getParesFromToService(from, to);
     }
 
-    /*@GetMapping("/day")
-    private List<Pare> getDay(@RequestParam("group") String group, @RequestParam("date") Long date){
-        return pareService.getDayService(group, date);
-    }*/
+    @GetMapping("/bygroup")
+    public List<Pare> getParesByGroupId(
+            @RequestParam Long id,
+            @RequestParam Date from,
+            @RequestParam Date to
+        ){
+        return pareService.getParesByGroupService(id,from, to);
+    }
 
-    @PostMapping("/add")
-    private ResponseEntity<?> addPare(Principal principal, @RequestBody PareDto pareDto){
-        return pareService.addPareService(principal, pareDto);
+    @PostMapping("/upload")
+    public ResponseEntity<?> uploadPares(
+            @RequestBody List<PareDto> pares,
+            @RequestParam Date from,
+            @RequestParam Date to
+        ){
+        return pareService.uploadParesService(pares, from, to);
     }
 }

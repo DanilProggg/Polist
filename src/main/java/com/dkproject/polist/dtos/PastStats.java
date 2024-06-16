@@ -4,23 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Date;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PareDto {
-
+public class PastStats {
     private Long group_id;
-
-    private Date date;
-
-    private int number;
-    private int subgroup;
-
     private Long discipline_id;
-
-    private Long teacher_id;
-
-    private Long classroom_id;
+    private int pastHours;
 }

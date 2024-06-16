@@ -1,62 +1,53 @@
 package com.dkproject.polist.services;
 
+import com.dkproject.polist.dtos.ApiDto;
 import com.dkproject.polist.dtos.PareDto;
-import com.dkproject.polist.entities.*;
-import com.dkproject.polist.repos.*;
-import org.springframework.http.HttpStatus;
+import com.dkproject.polist.entities.Pare;
+import com.dkproject.polist.repos.PareRepo;
+import jakarta.transaction.Transactional;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
-import java.security.Principal;
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class PareService {
+
     private final PareRepo pareRepo;
-    private final UserRepo userRepo;
-    private final DisciplineRepo disciplineRepo;
 
-    private final TeacherRepo teacherRepo;
-    private final ClassroomRepo classroomRepo;
-    private final GroupRepo groupRepo;
-
-    public PareService(PareRepo pareRepo, UserRepo userRepo, DisciplineRepo disciplineRepo, TeacherRepo teacherRepo, ClassroomRepo classroomRepo, GroupRepo groupRepo) {
+    public PareService(PareRepo pareRepo) {
         this.pareRepo = pareRepo;
-        this.userRepo = userRepo;
-        this.disciplineRepo = disciplineRepo;
-        this.teacherRepo = teacherRepo;
-        this.classroomRepo = classroomRepo;
-        this.groupRepo = groupRepo;
     }
 
-    public ResponseEntity<?> addPareService(Principal principal, PareDto pareDto) {
-        try {
-            User user = userRepo.findByName(principal.getName()).orElseThrow(() -> new UsernameNotFoundException("Пользователь не авторизирован"));
-            Discipline discipline = disciplineRepo.findById(pareDto.getGroup_id()).orElseThrow(()->new RuntimeException("Группа не найдена"));
-            Classroom classroom = classroomRepo.findById(pareDto.getClassroom_id()).orElseThrow(()->new RuntimeException("Аудитория не найдена"));
-            Teacher teacher = teacherRepo.findById(pareDto.getTeacher_id()).orElseThrow(()->new RuntimeException("Преподаватель не найден"));
-            Group group = groupRepo.findById(pareDto.getGroup_id()).orElseThrow(()->new RuntimeException("Группа не найден"));
+    public List<Pare> getParesByGroupService(Long id, Date from, Date to){
+        return pareRepo.findWeekByGroupId(id,from,to);
+    }
+
+    public List<Pare> getParesFromToService(java.sql.Date from, java.sql.Date to){
+        return pareRepo.findAllWeek(from,to);
+    }
+
+
+    @Transactional
+    public ResponseEntity<?> uploadParesService(List<PareDto> paresDto, Date from, Date to){
+        List<Pare> pares = new ArrayList<>();
+        paresDto.forEach(pareDto -> {
             Pare pare = new Pare();
-            pare.setNumber(pare.getNumber());
             pare.setDate(pareDto.getDate());
-            pare.setGroup_id(group.getId());
-            pare.setDiscipline_id(discipline.getId());
-            pare.setTeacher_id(teacher.getId());
-            pare.setClassroom_id(classroom.getId());
-            pareRepo.save(pare);
-            return ResponseEntity.ok(pare);
-        } catch (Exception e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-
+            pare.setNumber(pareDto.getNumber());
+            pare.setClassroom_id(pareDto.getClassroom_id());
+            pare.setDiscipline_id(pareDto.getDiscipline_id());
+            pare.setTeacher_id(pareDto.getTeacher_id());
+            pare.setGroup_id(pareDto.getGroup_id());
+            pare.setSubgroup(pareDto.getSubgroup());
+            pares.add(pare);
+        });
+        pareRepo.deleteWeek(from, to);
+        pareRepo.saveAll(pares);
+        return ResponseEntity.ok(pareRepo.findAllWeek(from, to));
     }
-
-    /*public ResponseEntity<?> getDayService(Long group_id, Long day){
-
-    }*/
-/*
-    public List<Pare> getDayService(String group, Long date){
-        return pareRepo.findUsingDay(group, date);
-    }*/
 
 }

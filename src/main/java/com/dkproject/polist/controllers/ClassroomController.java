@@ -1,13 +1,13 @@
 package com.dkproject.polist.controllers;
 
+import com.dkproject.polist.dtos.IdAndNumberClassroomDto;
 import com.dkproject.polist.services.ClassroomService;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 @RestController
-@RequestMapping("/api/v1/")
+@RequestMapping("/api/v1/classroom")
 public class ClassroomController {
     private final ClassroomService classroomService;
 
@@ -15,7 +15,18 @@ public class ClassroomController {
         this.classroomService = classroomService;
     }
 
-    public ResponseEntity<?> addClassroom(@Param("name") String name){
-        return classroomService.addClassroomService(name);
+    @PostMapping("/add")
+    public ResponseEntity<?> addClassroom(@RequestParam String number){
+        return classroomService.addClassroomService(number);
+    }
+
+    @PostMapping("/delete")
+    public ResponseEntity<?> deleteClassroom(@RequestParam Long id){
+        return classroomService.deleteClassroomService(id);
+    }
+
+    @GetMapping("/all")
+    public List<IdAndNumberClassroomDto> getClassrooms(){
+        return classroomService.allClassroomsService();
     }
 }

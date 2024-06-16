@@ -2,8 +2,6 @@ package com.dkproject.polist.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -19,6 +17,6 @@ public class Group {
     private Long startDate;
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "group_id")
-    List<Pare> pares;
+    private List<Pare> pares;
 }
 

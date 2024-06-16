@@ -7,24 +7,17 @@ import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.sql.Date;
-
+import org.springframework.stereotype.Service;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-public class Pare {
-    //Добавить int subgroup; для показа подгруппы
+public class Stats {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private Long group_id;
-    private int number;
-    private int subgroup;
-    private Date date;
     private Long discipline_id;
-    private Long teacher_id;
-    private Long classroom_id;
+    private int planedHours;
 }
