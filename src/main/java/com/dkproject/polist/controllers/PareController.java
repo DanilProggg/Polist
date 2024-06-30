@@ -44,4 +44,13 @@ public class PareController {
         ){
         return pareService.uploadParesService(pares, from, to);
     }
+
+    @PostMapping("/upload/v2")
+    public ResponseEntity<?> uploadParesV2(
+            @RequestBody List<PareDto> pares,
+            @RequestParam Date from,
+            @RequestParam Date to
+    ){
+        return pareService.uploadParesByPare(pares, from, to);
+    }
 }

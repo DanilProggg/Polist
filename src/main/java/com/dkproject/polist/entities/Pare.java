@@ -20,6 +20,7 @@ public class Pare {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    private boolean sub;
     private Long group_id;
     private int number;
     private int subgroup;

@@ -24,8 +24,8 @@ public interface PareRepo extends JpaRepository<Pare, Long> {
     @Query("delete from Pare p where p.date >= ?1 and p.date <= ?2")
     void deleteWeek(Date from, Date to);
 
-    @Query("select p from Pare p where p.group_id = ?1 and p.date = ?2 and p.number = ?3")
-    Optional<Pare> findByGroup_idAndDateAndNumber(Long group_id, Date date, int number);
+    @Query("select p from Pare p where p.group_id = ?1 and p.date = ?2 and p.number = ?3 and p.subgroup = ?4")
+    Optional<Pare> findByGroup_idAndDateAndNumberAndSubgroup(Long group_id, Date date, int number, int subgroup);
 
     @Query("select count(p) from Pare p where p.group_id = ?1")
     List<Pare> findCountByGroup_id(Long group_id);
@@ -35,4 +35,8 @@ public interface PareRepo extends JpaRepository<Pare, Long> {
      */
     @Query("select p from Pare p where p.group_id = ?1 and p.discipline_id = ?2 and p.date < CURRENT_DATE()")
     List<Pare> findPastPareByGroupIdAndDisciplineId(Long group_id, Long discipline_id);
+
+    @Modifying
+    @Query("delete Pare p where p.group_id = ?1 and p.date = ?2 and p.number = ?3 and p.subgroup = ?4")
+    void deleteByGroup_idAndDateAndNumber(Long group_id, Date date, int number, int subgroup);
 }
