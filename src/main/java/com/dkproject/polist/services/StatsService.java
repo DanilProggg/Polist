@@ -2,20 +2,17 @@ package com.dkproject.polist.services;
 
 import com.dkproject.polist.dtos.ApiDto;
 import com.dkproject.polist.dtos.PastStats;
-import com.dkproject.polist.entities.Discipline;
-import com.dkproject.polist.entities.Group;
-import com.dkproject.polist.entities.Pare;
-import com.dkproject.polist.entities.Stats;
-import com.dkproject.polist.repos.DisciplineRepo;
-import com.dkproject.polist.repos.GroupRepo;
-import com.dkproject.polist.repos.PareRepo;
-import com.dkproject.polist.repos.StatsRepo;
+import com.dkproject.polist.entities.*;
+import com.dkproject.polist.repos.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class StatsService {
@@ -23,12 +20,14 @@ public class StatsService {
     private final GroupRepo groupRepo;
     private final DisciplineRepo disciplineRepo;
     private final PareRepo pareRepo;
+    private final TeacherRepo teacherRepo;
 
-    public StatsService(StatsRepo statsRepo, GroupRepo groupRepo, DisciplineRepo disciplineRepo, PareRepo pareRepo) {
+    public StatsService(StatsRepo statsRepo, GroupRepo groupRepo, DisciplineRepo disciplineRepo, PareRepo pareRepo, TeacherRepo teacherRepo) {
         this.statsRepo = statsRepo;
         this.groupRepo = groupRepo;
         this.disciplineRepo = disciplineRepo;
         this.pareRepo = pareRepo;
+        this.teacherRepo = teacherRepo;
     }
 
     public ResponseEntity<?> getGroupStats(Long group_id, Long discipline_id){
@@ -81,4 +80,13 @@ public class StatsService {
         return pastStats;
 
     }
+
+//    public ResponseEntity<?> getCountOnPareByTeacher(Long teacher_id){
+//        Teacher teacher = teacherRepo.findById(teacher_id).orElseThrow(()->new RuntimeException("Преподаватель не найден"));
+//        ArrayList<Pare> pares = new ArrayList<>(teacher.getPares());
+//        pares.stream().filter(pare -> {
+//
+//        }).collect(Collectors.toList());
+//
+//    }
 }
