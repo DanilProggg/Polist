@@ -1,6 +1,5 @@
 package com.dkproject.polist.repos;
 
-import com.dkproject.polist.dtos.PastStats;
 import com.dkproject.polist.entities.Pare;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -14,7 +13,7 @@ import java.util.Optional;
 @Repository
 public interface PareRepo extends JpaRepository<Pare, Long> {
 
-    @Query("select p from Pare p where p.group_id = ?1 and p.date >= ?2 and p.date <= ?3 order by p.date, p.number")
+    @Query("select p from Pare p where p.group_id = ?1 and p.date >= ?2 and p.date <= ?3 order by p.date, p.number, p.subgroup")
     List<Pare> findWeekByGroupId(Long group_id, Date from, Date to);
 
     @Query("select p from Pare p where p.date >= ?1 and p.date <= ?2 order by p.date, p.number")
@@ -27,8 +26,6 @@ public interface PareRepo extends JpaRepository<Pare, Long> {
     @Query("select p from Pare p where p.group_id = ?1 and p.date = ?2 and p.number = ?3 and p.subgroup = ?4")
     Optional<Pare> findByGroup_idAndDateAndNumberAndSubgroup(Long group_id, Date date, int number, int subgroup);
 
-    @Query("select count(p) from Pare p where p.group_id = ?1")
-    List<Pare> findCountByGroup_id(Long group_id);
 
     /*
     For Stats

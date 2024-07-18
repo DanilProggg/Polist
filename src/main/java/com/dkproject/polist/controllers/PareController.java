@@ -2,11 +2,18 @@ package com.dkproject.polist.controllers;
 
 import com.dkproject.polist.dtos.PareDto;
 import com.dkproject.polist.entities.Pare;
+import com.dkproject.polist.services.ExcelService;
 import com.dkproject.polist.services.PareService;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.sql.Date;
 import java.util.List;
 
@@ -14,9 +21,11 @@ import java.util.List;
 @RequestMapping("/api/v1/pare")
 public class PareController {
     private final PareService pareService;
+    private final ExcelService excelService;
 
-    public PareController(PareService pareService) {
+    public PareController(PareService pareService, ExcelService excelService) {
         this.pareService = pareService;
+        this.excelService = excelService;
     }
 
     @GetMapping("/week")
@@ -52,5 +61,15 @@ public class PareController {
             @RequestParam Date to
     ){
         return pareService.uploadParesByPare(pares, from, to);
+    }
+
+    @GetMapping("/report")
+    @ResponseBody
+    public ResponseEntity<ByteArrayResource> getReport(
+            @RequestParam Date to,
+            @RequestParam Date from,
+            @RequestParam Long group_id
+            ) throws IOException {
+       return excelService.writeIntoExcel(from, to, group_id);
     }
 }

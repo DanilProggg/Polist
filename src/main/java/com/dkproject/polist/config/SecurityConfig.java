@@ -45,6 +45,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/api/v1/pare/week",
                                 "/api/v1/pare/bygroup",
+                                "/api/v1/pare/report",
                                 "/api/v1/teacher/all",
                                 "/api/v1/group/all",
                                 "/api/v1/classroom/all",
@@ -80,8 +81,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         //Make the below setting as * to allow connection from any hos
-        corsConfiguration.setAllowedOrigins(List.of("http://localhost:4200"));
-        //        corsConfiguration.setAllowedOriginPatterns(List.of("http://localhost:4200"));
+        corsConfiguration.setAllowedOrigins(List.of("http://10.12.131.11"));
         corsConfiguration.setAllowedMethods(List.of("GET", "POST", "OPTIONS","PUT"));
         corsConfiguration.setAllowCredentials(true);
         corsConfiguration.setAllowedHeaders(List.of("*"));
