@@ -45,6 +45,14 @@ public class PareController {
         return pareService.getParesByGroupService(id,from, to);
     }
 
+    @GetMapping("/bygroup-and-date")
+    public ResponseEntity<?> getParesByGroupId(
+            @RequestParam Long id,
+            @RequestParam Date date
+    ){
+        return pareService.getParesByGroupAndDayWithNames(id, date);
+    }
+
     @PostMapping("/upload")
     public ResponseEntity<?> uploadPares(
             @RequestBody List<PareDto> pares,

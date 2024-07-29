@@ -16,6 +16,9 @@ public interface PareRepo extends JpaRepository<Pare, Long> {
     @Query("select p from Pare p where p.group_id = ?1 and p.date >= ?2 and p.date <= ?3 order by p.date, p.number, p.subgroup")
     List<Pare> findWeekByGroupId(Long group_id, Date from, Date to);
 
+    @Query("select p from Pare p where p.group_id = ?1 and p.date = ?2")
+    List<Pare> findParesByGroupIdAndDay(Long group_id, Date date);
+
     @Query("select p from Pare p where p.date >= ?1 and p.date <= ?2 order by p.date, p.number")
     List<Pare> findAllWeek(Date from, Date to);
 

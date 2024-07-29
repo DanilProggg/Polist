@@ -235,7 +235,7 @@ public class ExcelService {
             sheet.autoSizeColumn(6);
 
             // Записываем всё в файл
-            File excel = new File(uploadPath + file);
+            File excel = new File(uploadPath+ "/" + file);
 
             workbook.write(new FileOutputStream(excel));
             workbook.close();
