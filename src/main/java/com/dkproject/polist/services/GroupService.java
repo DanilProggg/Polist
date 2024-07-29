@@ -14,7 +14,9 @@ import org.springframework.stereotype.Service;
 
 import java.security.Principal;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class GroupService {
@@ -58,5 +60,13 @@ public class GroupService {
 
     public List<Group> allGroups(){
         return groupRepo.findAll(Sort.by("name"));
+    }
+
+
+    public ResponseEntity<?> getGroupIdByName(String name){
+        Group group = groupRepo.findByName(name).orElseThrow(()->new RuntimeException("Группа не найдена"));
+        Map map = new HashMap();
+        map.put("id", group.getId());
+        return ResponseEntity.ok(map);
     }
 }

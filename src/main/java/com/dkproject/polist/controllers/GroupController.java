@@ -49,4 +49,10 @@ public class GroupController {
     public List<Group> getGroups(){
         return  groupService.allGroups();
     }
+
+
+    @GetMapping("/getIdByName")
+    public ResponseEntity<?> getGroupIdByName(@Param("name") String name){
+        return groupService.getGroupIdByName(name);
+    }
 }
